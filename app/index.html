@@ -8,6 +8,8 @@
 
   <script src="bower_components/jquery/jquery.js"></script>
   <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/moment/moment.js"></script>
+  <script src="bower_components/angular-moment/angular-moment.js"></script>
   <script src="js/app.js"></script>
   <script src="js/controllers.js"></script>
   <script src="js/filters.js"></script>
@@ -32,15 +34,16 @@
       </div>
       <div class="col-md-3">
         <label for="estimated-time">Remaining</label>
-        {(remaining)}
+        {{remaining}}
       </div>
       <div class="col-md-3">
         <label for="rate">Rate</label>
-        {(rate | number:3)} / minute
+        {{rate | number:3}} / minute
       </div>
       <div class="col-md-3">
         <label for="estimated-time">Estimate</label>
-        {(estimate | date:'short')}
+        <span am-time-ago="estimate"></span>
+        ({{estimate | date:'short'}})
       </div>
     </div>
 
@@ -69,10 +72,10 @@
             </tr>
             <tr ng-repeat="sample in samples | orderBy:'-time'">
               <td>
-                {(sample.time | date:'mediumTime')}
+                {{sample.time | date:'mediumTime'}}
               </td>
               <td>
-                {(sample.value)}
+                {{sample.value}}
               </td>
               <td><button ng-click="remove(sample)">Remove</button></td>
             </tr>
