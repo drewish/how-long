@@ -38,7 +38,7 @@
       </div>
       <div class="col-md-3">
         <label for="rate">Rate</label>
-        {{rate | number:3}} / minute
+        {{rate | rate:3}}
       </div>
       <div class="col-md-3">
         <label for="estimated-time">Estimate</label>
@@ -55,6 +55,7 @@
             <tr>
               <td>Time</td>
               <td>Count</td>
+              <td>Rate</td>
               <td></td>
             </tr>
           </thead>
@@ -66,6 +67,7 @@
               <td>
                 <input ng-model="newsample.value" type="number" min="1" name="value" size="60" required>
               </td>
+              <td></td>
               <td>
                 <button ng-click="add()" ng-disabled="form.$invalid">Add</button>
               </td>
@@ -76,6 +78,9 @@
               </td>
               <td>
                 {{sample.value}}
+              </td>
+              <td>
+                {{sample.rate | rate:3}}
               </td>
               <td><button ng-click="remove(sample)">Remove</button></td>
             </tr>

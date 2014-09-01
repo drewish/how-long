@@ -4,7 +4,7 @@
 
 var howLongApp = angular.module('howLongApp', [
   'howLongControllers',
-  // 'howLongFilters',
+  'howLongFilters',
   // 'howLongServices'
   'angularMoment',
 ]);

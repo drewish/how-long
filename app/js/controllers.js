@@ -42,6 +42,12 @@ howLongControllers.controller('SampleListCtrl', function ($scope, $filter) {
     return date;
   }
 
+  function computeRate(earlierSample, laterSample) {
+    var completed = laterSample.value - earlierSample.value;
+    var intervalInMs = laterSample.time - earlierSample.time;
+    return completed / intervalInMs;
+  }
+
   function recalc() {
     if ($scope.samples.length < 2) {
       $scope.rate = 0;
@@ -50,16 +56,17 @@ howLongControllers.controller('SampleListCtrl', function ($scope, $filter) {
       return;
     }
 
-    var samplesByTime = $filter('orderBy')($scope.samples, '"time"');
-    var first = samplesByTime[0];
-    var last = samplesByTime[samplesByTime.length - 1];
+    $scope.samples = $filter('orderBy')($scope.samples, '"time"');
+    var first = $scope.samples[0];
+    var last = $scope.samples[$scope.samples.length - 1];
 
-    var intervalInMs = last.time - first.time;
-    var completed = last.value - first.value; // assumes descending?
-    var ratePerMs = completed / intervalInMs;
+    var i, length;
+    for (i = 1, length = $scope.samples.length; i < length; i++) {
+      $scope.samples[i].rate = computeRate($scope.samples[i - 1], $scope.samples[i]);
+    }
 
-    $scope.rate = ratePerMs * 1000 * 60;
+    $scope.rate = computeRate(first, last);
     $scope.remaining = $scope.target - last.value;
-    $scope.estimate = new Date(last.time.getTime() + ($scope.remaining / ratePerMs));
+    $scope.estimate = new Date(last.time.getTime() + ($scope.remaining / $scope.rate));
   }
 });
