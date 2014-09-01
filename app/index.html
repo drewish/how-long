@@ -2,7 +2,7 @@
 <html lang="en" ng-app="howLongApp">
 <head>
   <meta charset="utf-8">
-  <title>Google Phone Gallery</title>
+  <title>How Long?</title>
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" href="css/app.css">
 
@@ -12,52 +12,42 @@
   <script src="js/controllers.js"></script>
   <script src="js/filters.js"></script>
 </head>
-<body>
+<body ng-app="sampleApp" ng-controller="SampleListCtrl">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h1>How Long?</h1>
+        <p>
+          This should help you figure out when a long running task will complete.
+          Set the Final Count so we know if it's counting up or down. Then enter
+          two samples and we'll give you an estimated completion.
+        </p>
+      </div>
+    </div>
 
-  <div class="view-container">
-    <div ng-view class="view-frame"></div>
-  </div>
+    <div class="row">
+      <div class="col-md-3">
+        <label for="target">Final Count</label>
+        <input type="number" size="60" ng-model="target" name="target">
+      </div>
+      <div class="col-md-3">
+        <label for="estimated-time">Remaining</label>
+        {(remaining)}
+      </div>
+      <div class="col-md-3">
+        <label for="rate">Rate</label>
+        {(rate | number:3)} / minute
+      </div>
+      <div class="col-md-3">
+        <label for="estimated-time">Estimate</label>
+        {(estimate | date:'short')}
+      </div>
+    </div>
 
-<div ng-app="sampleApp" ng-controller="SampleListCtrl">
-  <div class="row">
-    <div class="columns small-12">
-      <p>
-        This should help you figure out when a long running task will complete.
-        Set the Final Count so we know if it's counting up or down. Then enter
-        two samples and we'll give you an estimated completion.
-      </p>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="small-3 columns">
-      <label for="target">Final Count</label>
-      <input type="number" size="60" ng-model="target" name="target">
-    </div>
-    <div class="small-3 columns">
-      <label for="estimated-time">Remaining</label>
-      {(remaining)}
-    </div>
-    <div class="small-3 columns">
-      <label for="rate">Rate</label>
-      {(rate | number:3)} / minute
-    </div>
-    <div class="small-3 columns">
-      <label for="estimated-time">Estimate</label>
-      {(estimate | date:'short')}
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="columns">
-      <h3 class="subheader">Samples</h3>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="columns">
-      <form name="form">
-        <table>
+    <div class="row">
+      <form name="form" class="col-md-6">
+        <h3 class="subheader">Samples</h3>
+        <table class="table table-hover">
           <thead>
             <tr>
               <td>Time</td>
@@ -91,8 +81,6 @@
       </form>
     </div>
   </div>
-</div>
-
 
 </body>
 </html>
