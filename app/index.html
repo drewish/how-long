@@ -71,12 +71,12 @@
             <h1 class="remaining">{{remaining}}</h1>
             <label for="estimated-time">Remaining</label>
 
+            <h1>{{rate | rate}}</h1>
             <label for="rate">Rate</label>
-            {{rate | rate}}
 
+            <h1 am-time-ago="estimate"></h1>
+            <h1>{{estimate | date:'short'}}</h1>
             <label for="estimated-time">Estimate</label>
-            <span am-time-ago="estimate"></span>
-            ({{estimate | date:'short'}})
           </div>
         </div>
       </div>

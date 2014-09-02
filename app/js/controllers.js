@@ -9,7 +9,7 @@ howLongControllers.controller('SampleListCtrl', function ($scope, $filter) {
     // {time: dateFromTime('13:34'), value: 456},
   ];
   $scope.target = 0;
-  $scope.rate = 0;
+  $scope.rate = null;
   $scope.remaining = null;
   $scope.estimate = null;
 
@@ -50,7 +50,7 @@ howLongControllers.controller('SampleListCtrl', function ($scope, $filter) {
 
   function recalc() {
     if ($scope.samples.length < 2) {
-      $scope.rate = 0;
+      $scope.rate = null;
       $scope.remaining = null;
       $scope.estimate = null;
       return;
