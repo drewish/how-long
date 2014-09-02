@@ -1,0 +1,18 @@
+$background-color:  #EC5F3D;
+
+$bgdark1:           darken($background-color, 3%);
+$bgdark2:           darken($background-color, 6%);
+
+$primary:           #FFF6BA;
+$secondary:         #FF8256;
+
+$headline-color:    $primary;
+$text-color:        $primary;
+
+$link-color:        $secondary;
+$link-hover-color:  darken($secondary, 30%);
+
+$text-size:   1em;
+$lead:        1.414em;
+
+$border-radius: 3px;
