@@ -30,15 +30,26 @@
           </div>
         </div>
 
+        <div class="row" ng-repeat="sample in samples">
+          <!-- {{sample.rate | rate}} -->
+          <!-- <button ng-click="remove(sample)">Remove</button> -->
+          <div class="small-5 columns sample_value">
+            {{sample.value}}
+          </div>
+          <div class="small-1 columns at"><label>AT</label></div>
+          <div class="small-6 columns sample_time">
+            {{sample.time | date:'mediumTime'}}
+          </div>
+        </div>
+
         <div class="row">
-          <form name="form">
+          <form name="form" ng-submit="add()">
             <div class="small-5 columns sample_value">
               <input ng-model="newsample.value" type="number" min="1" name="value" size="60" required>
             </div>
             <div class="small-1 columns at"><label>AT</label></div>
             <div class="small-6 columns sample_time">
               <input ng-model="newsample.time" type="time" name="time" size="60">
-              <button ng-click="add()" ng-disabled="form.$invalid">Add</button>
             </div>
           </form>
         </div>
@@ -69,36 +80,6 @@
             <span am-time-ago="estimate"></span>
             ({{estimate | date:'short'}})
           </div>
-        </div>
-
-        <div class="row">
-          <form name="form" class="col-md-6">
-            <h3 class="subheader">Samples</h3>
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <td>Time</td>
-                  <td>Count</td>
-                  <td>Rate</td>
-                  <td></td>
-                </tr>
-              </thead>
-              <tbody>
-                <tr ng-repeat="sample in samples | orderBy:'-time'">
-                  <td>
-                    {{sample.time | date:'mediumTime'}}
-                  </td>
-                  <td>
-                    {{sample.value}}
-                  </td>
-                  <td>
-                    {{sample.rate | rate}}
-                  </td>
-                  <td><button ng-click="remove(sample)">Remove</button></td>
-                </tr>
-              </tbody>
-            </table>
-          </form>
         </div>
       </div>
     </div>
