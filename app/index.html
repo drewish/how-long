@@ -15,11 +15,6 @@
       </div>
       <div class="control-container medium-6 columns">
         <h1>How Long?</h1>
-        <p>
-          This should help you figure out when a long running task will complete.
-          Set the Final Count so we know if it's counting up or down. Then enter
-          two samples and we'll give you an estimated completion.
-        </p>
 
         <div class="row">
           <div class="small-5 columns">
@@ -29,21 +24,38 @@
             <label>Time</label>
           </div>
         </div>
-        
-        <div class="row">
+
+        <div class="row" ng-repeat="sample in samples">
+          <!-- {{sample.rate | rate}} -->
+          <!-- <button ng-click="remove(sample)">Remove</button> -->
           <div class="small-5 columns sample_value">
-            <input type="number">
+            {{sample.value}}
           </div>
           <div class="small-1 columns at"><label>AT</label></div>
           <div class="small-6 columns sample_time">
-            <input type="time">
+            {{sample.time | date:'mediumTime'}}
           </div>
         </div>
 
         <div class="row">
+          <form name="form" ng-submit="add()">
+            <div class="small-5 columns sample_value">
+              <input ng-model="newsample.value" type="number" min="1" name="value" size="60" required>
+            </div>
+            <div class="small-1 columns at"><label>AT</label></div>
+            <div class="small-6 columns sample_time">
+              <input ng-model="newsample.time" type="time" name="time" size="60">
+            </div>
+          </form>
+        </div>
+
+        <div class="row" ng-show="samples.length < 2">
           <div class="columns">
             <section class="well">
-              <div class="meta-text text-center">
+              <div class="meta-text text-center" ng-show="samples.length == 0">
+                Enter two samples and we can tell you how long.
+              </div>
+              <div class="meta-text text-center" ng-show="samples.length == 1">
                 Just one more sample needed to tell you how long.
               </div>
             </section>
@@ -59,60 +71,17 @@
             <h1 class="remaining">{{remaining}}</h1>
             <label for="estimated-time">Remaining</label>
 
+            <h1>{{rate | rate}}</h1>
             <label for="rate">Rate</label>
-            {{rate | rate:3}}
 
+            <h1 am-time-ago="estimate"></h1>
+            <h1>{{estimate | date:'short'}}</h1>
             <label for="estimated-time">Estimate</label>
-            <span am-time-ago="estimate"></span>
-            ({{estimate | date:'short'}})
           </div>
         </div>
-
-        <div class="row">
-          <form name="form" class="col-md-6">
-            <h3 class="subheader">Samples</h3>
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <td>Time</td>
-                  <td>Count</td>
-                  <td>Rate</td>
-                  <td></td>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <input ng-model="newsample.time" type="time" name="time" size="60">
-                  </td>
-                  <td>
-                    <input ng-model="newsample.value" type="number" min="1" name="value" size="60" required>
-                  </td>
-                  <td></td>
-                  <td>
-                    <button ng-click="add()" ng-disabled="form.$invalid">Add</button>
-                  </td>
-                </tr>
-                <tr ng-repeat="sample in samples | orderBy:'-time'">
-                  <td>
-                    {{sample.time | date:'mediumTime'}}
-                  </td>
-                  <td>
-                    {{sample.value}}
-                  </td>
-                  <td>
-                    {{sample.rate | rate:3}}
-                  </td>
-                  <td><button ng-click="remove(sample)">Remove</button></td>
-                </tr>
-              </tbody>
-            </table>
-          </form>
-        </div>
-      </div>
-
       </div>
     </div>
+  </div>
 
   <script src="bower_components/jquery/jquery.js"></script>
   <script src="bower_components/angular/angular.js"></script>
