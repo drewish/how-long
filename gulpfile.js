@@ -37,6 +37,7 @@ gulp.task('styles', function() {
 
 // Watch
 gulp.task('watch', function() {
+  gulp.task('default', ['styles']);
   gulp.watch('app/scss/*.scss', ['styles'])
 });
 

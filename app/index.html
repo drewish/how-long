@@ -10,78 +10,98 @@
 <body ng-app="sampleApp" ng-controller="SampleListCtrl">
   <div class="container">
     <div class="row">
-      <div class="col-md-12">
+      <div class="medium-6 columns">
+        <div class="graph"></div>
+      </div>
+      <div class="medium-6 columns">
         <h1>How Long?</h1>
         <p>
           This should help you figure out when a long running task will complete.
           Set the Final Count so we know if it's counting up or down. Then enter
           two samples and we'll give you an estimated completion.
         </p>
-      </div>
-    </div>
 
-    <div class="row">
-      <div class="col-md-3">
-        <label for="target">Final Count</label>
-        <input type="number" size="60" ng-model="target" name="target">
-      </div>
-      <div class="col-md-3">
-        <label for="estimated-time">Remaining</label>
-        {{remaining}}
-      </div>
-      <div class="col-md-3">
-        <label for="rate">Rate</label>
-        {{rate | rate:3}}
-      </div>
-      <div class="col-md-3">
-        <label for="estimated-time">Estimate</label>
-        <span am-time-ago="estimate"></span>
-        ({{estimate | date:'short'}})
-      </div>
-    </div>
+        <div class="row">
+          <div class="small-5 columns">
+            Sample Value
+          </div>
+          <div class="small-6 small-offset-1 columns">
+            Time
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-5 columns">
+            <input type="text">
+          </div>
+          <div class="small-1 columns">AT</div>
+          <div class="small-6 columns">
+            <input type="text">
+          </div>
+        </div>
 
-    <div class="row">
-      <form name="form" class="col-md-6">
-        <h3 class="subheader">Samples</h3>
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <td>Time</td>
-              <td>Count</td>
-              <td>Rate</td>
-              <td></td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <input ng-model="newsample.time" type="time" name="time" size="60">
-              </td>
-              <td>
-                <input ng-model="newsample.value" type="number" min="1" name="value" size="60" required>
-              </td>
-              <td></td>
-              <td>
-                <button ng-click="add()" ng-disabled="form.$invalid">Add</button>
-              </td>
-            </tr>
-            <tr ng-repeat="sample in samples | orderBy:'-time'">
-              <td>
-                {{sample.time | date:'mediumTime'}}
-              </td>
-              <td>
-                {{sample.value}}
-              </td>
-              <td>
-                {{sample.rate | rate:3}}
-              </td>
-              <td><button ng-click="remove(sample)">Remove</button></td>
-            </tr>
-          </tbody>
-        </table>
-      </form>
+        <div class="row">
+          <div class="columns">
+            <label for="target">Final Count</label>
+            <input type="number" size="60" ng-model="target" name="target">
+          </div>
+          <div class="columns">
+            <h1 class="remaining">{{remaining}}</h1>
+            <label for="estimated-time">Remaining</label>
+
+            <label for="rate">Rate</label>
+            {{rate | rate:3}}
+
+            <label for="estimated-time">Estimate</label>
+            <span am-time-ago="estimate"></span>
+            ({{estimate | date:'short'}})
+          </div>
+        </div>
+
+        <div class="row">
+          <form name="form" class="col-md-6">
+            <h3 class="subheader">Samples</h3>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <td>Time</td>
+                  <td>Count</td>
+                  <td>Rate</td>
+                  <td></td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <input ng-model="newsample.time" type="time" name="time" size="60">
+                  </td>
+                  <td>
+                    <input ng-model="newsample.value" type="number" min="1" name="value" size="60" required>
+                  </td>
+                  <td></td>
+                  <td>
+                    <button ng-click="add()" ng-disabled="form.$invalid">Add</button>
+                  </td>
+                </tr>
+                <tr ng-repeat="sample in samples | orderBy:'-time'">
+                  <td>
+                    {{sample.time | date:'mediumTime'}}
+                  </td>
+                  <td>
+                    {{sample.value}}
+                  </td>
+                  <td>
+                    {{sample.rate | rate:3}}
+                  </td>
+                  <td><button ng-click="remove(sample)">Remove</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </form>
+        </div>
+      </div>
+
+      </div>
     </div>
-  </div>
 
   <script src="bower_components/jquery/jquery.js"></script>
   <script src="bower_components/angular/angular.js"></script>

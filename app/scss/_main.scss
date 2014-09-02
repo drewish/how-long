@@ -1,33 +1,12 @@
 body {
   background: $background-color;
   color: $text-color;
-  font-size: 100%;
-  line-height: 1.414; // Augmented fourth type scale
+  font-size: $em;
+  line-height: $line-height;
 }
 
 section {
   margin-bottom: $lead * 2;
-}
-
-header {
-  padding: $lead 0;
-  background: $bgdark1;
-  margin-bottom: $lead * 2;
-}
-
-.well {
-  background: $bgdark2;
-  border-radius: $border-radius;
-  padding: ($lead * 2) $lead $lead;
-}
-
-.experiment-info {
-  text-align: center;
-  @extend .small-caps;
-
-  .val {
-    @extend h2;
-  }
 }
 
 .button {
@@ -41,40 +20,12 @@ header {
   text-align: center;
 }
 
-.epi-table {
-  text-align: center;
-  border-bottom: 2px solid $bgdark2;
-}
-
-th {
-  font-weight: bold;
+input {
+  color: $primary;
+  background: $secondary;
+  border: none;
   padding: 1em;
+  border-radius: $border-radius;
+  font-size: $em * $lead;
+  width: 100%;
 }
-
-td {
-  padding: 0.5em;
-}
-
-.primary-heading {
-  color: lighten($text-color, 10%);
-  background-color: $bgdark2;
-
-  th span {
-    color: darken($text-color, 10%);
-    font-weight: bold;
-    font-size: 2em;
-    margin-right: $lead * 2;
-  }
-
-  th span:last-child {
-    margin-right: 0;
-  }
-}
-
-.secondary-heading {
-  th {
-    background-color: $bgdark1;
-  }
-}
-
-input { color: black; border: 0; }
