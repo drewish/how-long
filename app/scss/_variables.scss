@@ -1,7 +1,7 @@
 $background-color:  #EC5F3D;
 
-$bgdark1:           darken($background-color, 3%);
-$bgdark2:           darken($background-color, 6%);
+$bgdark1:           #E05634;
+$bgdark2:           #D64F2D;
 
 $primary:           #FFF6BA;
 $secondary:         #FF8256;
@@ -12,10 +12,16 @@ $text-color:        $primary;
 $link-color:        $secondary;
 $link-hover-color:  darken($secondary, 30%);
 
-$em:          16px;
-$lead:        1.414; // Augmented fourth type scale
+$form-default:      $secondary;
+$form-focus:        $bgdark2;
 
-$text-size:   1em;
-$line-height: $lead * 1em;
+$base-em:           16;
+$base-lh:           1.414; // Augmented fourth type scale
 
-$border-radius: 3px;
+$em:                16px;
+$lead:              $em * $base-lh;
+
+$text-size:         $em;
+$line-height:       $lead;
+
+$border-radius:     3px;

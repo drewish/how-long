@@ -5,8 +5,23 @@ body {
   line-height: $line-height;
 }
 
+a,
+input {
+  transition: all 0.25s ease-out;
+
+  &:hover,
+  &:focus {
+    transition: all 0.1s ease-in;
+  }
+}
+
 section {
   margin-bottom: $lead * 2;
+}
+
+.well {
+  padding: $lead;
+  background: $bgdark2;
 }
 
 .button {
@@ -20,12 +35,28 @@ section {
   text-align: center;
 }
 
+.control-container {
+  padding-top: $lead * 1.5;
+}
+
 input {
   color: $primary;
-  background: $secondary;
+  background: $form-default;
   border: none;
-  padding: 1em;
+  padding: 0.5em 0.75em;
   border-radius: $border-radius;
-  font-size: $em * $lead;
+  font-size: $em * $base-lh;
   width: 100%;
+  margin-bottom: $lead;
+  outline-color: $primary;
+
+  &:focus {
+    background: $form-focus;
+  }
+}
+
+.at {
+  label {
+    line-height: $lead * 2.25;
+  }
 }

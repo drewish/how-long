@@ -4,9 +4,9 @@ body {
   font-family: $sans-serif;
 }
 
-h1    { font-size: 2.827em; }
+h1    { font-size: 3.998em; }
 h2    { font-size: 1.999em; }
-h3    { font-size: 1em * $lead; }
+h3    { font-size: $lead; }
 h4    { font-size: 1em; }
 small { font-size: 0.707em; }
 
@@ -19,6 +19,7 @@ h6 {
   color: $text-color;
   font-weight: bold;
   font-style: italic;
+  line-height: $base-lh;
 }
 
 p {
@@ -38,10 +39,18 @@ p {
 a {
   color: $link-color;
   text-decoration: none;
-  transition: all 0.35s ease-out;
 
   &:hover {
     color: $link-hover-color;
-    transition: all 0.15s ease-in;
   }
+}
+
+.meta-text {
+  @extend small;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+label {
+  @extend .meta-text;
 }

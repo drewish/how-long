@@ -10,10 +10,10 @@
 <body ng-app="sampleApp" ng-controller="SampleListCtrl">
   <div class="container">
     <div class="row">
-      <div class="medium-6 columns">
+      <div class="graph-container medium-6 columns">
         <div class="graph"></div>
       </div>
-      <div class="medium-6 columns">
+      <div class="control-container medium-6 columns">
         <h1>How Long?</h1>
         <p>
           This should help you figure out when a long running task will complete.
@@ -23,19 +23,30 @@
 
         <div class="row">
           <div class="small-5 columns">
-            Sample Value
+            <label>Sample Value</label>
           </div>
           <div class="small-6 small-offset-1 columns">
-            Time
+            <label>Time</label>
           </div>
         </div>
+        
         <div class="row">
-          <div class="small-5 columns">
-            <input type="text">
+          <div class="small-5 columns sample_value">
+            <input type="number">
           </div>
-          <div class="small-1 columns">AT</div>
-          <div class="small-6 columns">
-            <input type="text">
+          <div class="small-1 columns at"><label>AT</label></div>
+          <div class="small-6 columns sample_time">
+            <input type="time">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="columns">
+            <section class="well">
+              <div class="meta-text text-center">
+                Just one more sample needed to tell you how long.
+              </div>
+            </section>
           </div>
         </div>
 
