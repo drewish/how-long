@@ -31,16 +31,19 @@
         </div>
 
         <div class="row">
-          <div class="small-5 columns sample_value">
-            <input type="number">
-          </div>
-          <div class="small-1 columns at"><label>AT</label></div>
-          <div class="small-6 columns sample_time">
-            <input type="time">
-          </div>
+          <form name="form">
+            <div class="small-5 columns sample_value">
+              <input ng-model="newsample.value" type="number" min="1" name="value" size="60" required>
+            </div>
+            <div class="small-1 columns at"><label>AT</label></div>
+            <div class="small-6 columns sample_time">
+              <input ng-model="newsample.time" type="time" name="time" size="60">
+              <button ng-click="add()" ng-disabled="form.$invalid">Add</button>
+            </div>
+          </form>
         </div>
 
-        <div class="row">
+        <div class="row" ng-show="samples.length < 1">
           <div class="columns">
             <section class="well">
               <div class="meta-text text-center">
@@ -81,18 +84,6 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>
-                    <input ng-model="newsample.time" type="time" name="time" size="60">
-                  </td>
-                  <td>
-                    <input ng-model="newsample.value" type="number" min="1" name="value" size="60" required>
-                  </td>
-                  <td></td>
-                  <td>
-                    <button ng-click="add()" ng-disabled="form.$invalid">Add</button>
-                  </td>
-                </tr>
                 <tr ng-repeat="sample in samples | orderBy:'-time'">
                   <td>
                     {{sample.time | date:'mediumTime'}}
@@ -110,9 +101,8 @@
           </form>
         </div>
       </div>
-
-      </div>
     </div>
+  </div>
 
   <script src="bower_components/jquery/jquery.js"></script>
   <script src="bower_components/angular/angular.js"></script>
