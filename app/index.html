@@ -29,7 +29,7 @@
             <label>Time</label>
           </div>
         </div>
-        
+
         <div class="row">
           <div class="small-5 columns sample_value">
             <input type="number">
@@ -60,7 +60,7 @@
             <label for="estimated-time">Remaining</label>
 
             <label for="rate">Rate</label>
-            {{rate | rate:3}}
+            {{rate | rate}}
 
             <label for="estimated-time">Estimate</label>
             <span am-time-ago="estimate"></span>
@@ -101,7 +101,7 @@
                     {{sample.value}}
                   </td>
                   <td>
-                    {{sample.rate | rate:3}}
+                    {{sample.rate | rate}}
                   </td>
                   <td><button ng-click="remove(sample)">Remove</button></td>
                 </tr>
