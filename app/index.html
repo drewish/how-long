@@ -15,11 +15,6 @@
       </div>
       <div class="control-container medium-6 columns">
         <h1>How Long?</h1>
-        <p>
-          This should help you figure out when a long running task will complete.
-          Set the Final Count so we know if it's counting up or down. Then enter
-          two samples and we'll give you an estimated completion.
-        </p>
 
         <div class="row">
           <div class="small-5 columns">
@@ -54,10 +49,13 @@
           </form>
         </div>
 
-        <div class="row" ng-show="samples.length < 1">
+        <div class="row" ng-show="samples.length < 2">
           <div class="columns">
             <section class="well">
-              <div class="meta-text text-center">
+              <div class="meta-text text-center" ng-show="samples.length == 0">
+                Enter two samples and we can tell you how long.
+              </div>
+              <div class="meta-text text-center" ng-show="samples.length == 1">
                 Just one more sample needed to tell you how long.
               </div>
             </section>
