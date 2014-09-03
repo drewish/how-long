@@ -24,6 +24,9 @@ section {
   background: $bgdark2;
 }
 
+.bgdark1 { background-color: $bgdark1; }
+.bgdark2 { background-color: $bgdark2; }
+
 .button {
   display: inline-block;
   padding: 1em $lead;
@@ -43,20 +46,38 @@ input {
   color: $primary;
   background: $form-default;
   border: none;
-  padding: 0.5em 0.75em;
+  padding: 0.75em;
+  height: $em * 4;
   border-radius: $border-radius;
   font-size: $em * $base-lh;
   width: 100%;
   margin-bottom: $lead;
-  outline-color: $primary;
 
   &:focus {
     background: $form-focus;
+    outline: 3px solid $form-border;
+    color: $secondary;
   }
 }
 
 .at {
+  padding: 0;
+
   label {
     line-height: $lead * 2.25;
+    display: block;
+    text-align: center;
+  }
+}
+
+.sample_value { padding-right: 0; }
+.sample_time  { padding-left: 0; }
+
+.sample_value,
+.sample_time {
+  h3 {
+    padding: 0.5em;
+    background: $bgdark1;
+    margin-bottom: $em;
   }
 }

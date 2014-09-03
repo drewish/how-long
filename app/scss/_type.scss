@@ -51,6 +51,10 @@ a {
   letter-spacing: 0.15em;
 }
 
+.big-text {
+  font-size: $em * $base-lh;
+}
+
 label {
   @extend .meta-text;
 }

@@ -13,7 +13,8 @@ $link-color:        $secondary;
 $link-hover-color:  darken($secondary, 30%);
 
 $form-default:      $secondary;
-$form-focus:        $bgdark2;
+$form-focus:        #fff;
+$form-border:       $bgdark2;
 
 $base-em:           16;
 $base-lh:           1.414; // Augmented fourth type scale

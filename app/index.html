@@ -20,7 +20,7 @@
           <div class="small-5 columns">
             <label>Sample Value</label>
           </div>
-          <div class="small-6 small-offset-1 columns">
+          <div class="small-5 small-offset-2 columns">
             <label>Time</label>
           </div>
         </div>
@@ -29,11 +29,11 @@
           <!-- {{sample.rate | rate}} -->
           <!-- <button ng-click="remove(sample)">Remove</button> -->
           <div class="small-5 columns sample_value">
-            {{sample.value}}
+            <h3>{{sample.value}}</h3>
           </div>
-          <div class="small-1 columns at"><label>AT</label></div>
-          <div class="small-6 columns sample_time">
-            {{sample.time | date:'mediumTime'}}
+          <div class="small-2 columns at"><label>at</label></div>
+          <div class="small-5 columns sample_time">
+            <h3>{{sample.time | date:'mediumTime'}}</h3>
           </div>
         </div>
 
@@ -42,8 +42,8 @@
             <div class="small-5 columns sample_value">
               <input ng-model="newsample.value" type="number" min="1" name="value" size="60" required>
             </div>
-            <div class="small-1 columns at"><label>AT</label></div>
-            <div class="small-6 columns sample_time">
+            <div class="small-2 columns at"><label>at</label></div>
+            <div class="small-5 columns sample_time">
               <input ng-model="newsample.time" type="time" name="time" size="60">
             </div>
           </form>
@@ -53,10 +53,11 @@
           <div class="columns">
             <section class="well">
               <div class="meta-text text-center" ng-show="samples.length == 0">
-                Enter two samples and we can tell you how long.
+                Enter <em>two or more samples</em> to know how long a
+                task will take to complete.
               </div>
               <div class="meta-text text-center" ng-show="samples.length == 1">
-                Just one more sample needed to tell you how long.
+                Just <strong>one</strong> more sample needed.
               </div>
             </section>
           </div>

@@ -14,3 +14,13 @@ em      { font-style: italic; }
   @extend .caps;
   @extend small;
 }
+
+::selection {
+  background: $bgdark2;
+  color: #fff;
+}
+
+::-moz-selection {
+  background: $bgdark2;
+  color: #fff;
+}
