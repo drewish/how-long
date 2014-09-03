@@ -82,6 +82,15 @@
         </div>
       </div>
     </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <svg version="1.1" viewBox="-1 -1 101 101" preserveAspectRatio="xMinYMin meet" class="svg-content">
+          <polygon ng-repeat="polygon in polygons" fill="red" stroke="blue" stroke-width="1"
+            ng-attr-points="{{polygon}}" />
+        </svg>
+      </div>
+    </div>
   </div>
 
   <script src="bower_components/jquery/jquery.js"></script>

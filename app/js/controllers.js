@@ -5,8 +5,14 @@
 var howLongControllers = angular.module('howLongControllers', []);
 
 howLongControllers.controller('SampleListCtrl', function ($scope, $filter) {
+  var date1 = new Date();
+  var date2 = new Date();
+  date1.setMinutes(date1.getMinutes() - 30);
+  date2.setMinutes(date2.getMinutes() - 20);
   $scope.samples = [
-    // {time: dateFromTime('13:34'), value: 456},
+    {time: date1, value: 1000},
+    {time: date2, value: 540},
+    {time: new Date(), value: 200},
   ];
   $scope.target = 0;
   $scope.rate = null;
@@ -60,13 +66,40 @@ howLongControllers.controller('SampleListCtrl', function ($scope, $filter) {
     var first = $scope.samples[0];
     var last = $scope.samples[$scope.samples.length - 1];
 
+    $scope.rate = computeRate(first, last);
+    $scope.remaining = $scope.target - last.value;
+    $scope.estimate = new Date(last.time.getTime() + ($scope.remaining / $scope.rate));
+
     var i, length;
     for (i = 1, length = $scope.samples.length; i < length; i++) {
       $scope.samples[i].rate = computeRate($scope.samples[i - 1], $scope.samples[i]);
     }
 
-    $scope.rate = computeRate(first, last);
-    $scope.remaining = $scope.target - last.value;
-    $scope.estimate = new Date(last.time.getTime() + ($scope.remaining / $scope.rate));
+    // Figure out percentages
+    var minTime = first.time.getTime();
+    var maxTime = $scope.estimate.getTime();
+    var minValue = Math.min(first.value, $scope.target);
+    var maxValue = Math.max(first.value, $scope.target);
+    var points = [];
+    var valueRange = (maxValue - minValue);
+    var timeRange = (maxTime - minTime);
+    $scope.samples.forEach(function(sample) {
+      var scaledTime = 100 * (sample.time - minTime) / timeRange;
+      var scaledValue = 100 * (sample.value - minValue) / valueRange;
+      points.push([
+        [scaledValue, scaledTime],
+        [0, scaledTime]
+      ]);
+    });
+    // Finish point
+    points.push([[100 * ($scope.target - minValue) / valueRange, 100]]);
+
+    $scope.polygons = [];
+    for (i = 1, length = points.length; i < length; i++) {
+      points[i-1].reverse();
+      $scope.polygons.push(
+        [].concat(points[i-1],points[i]).join(' ')
+      );
+    }
   }
 });
