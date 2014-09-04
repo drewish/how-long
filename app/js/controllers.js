@@ -5,19 +5,34 @@
 var howLongControllers = angular.module('howLongControllers', []);
 
 howLongControllers.controller('SampleListCtrl', function ($scope, $filter) {
-  var date1 = new Date();
-  var date2 = new Date();
-  date1.setMinutes(date1.getMinutes() - 30);
-  date2.setMinutes(date2.getMinutes() - 20);
-  $scope.samples = [
-    {time: date1, value: 1000},
-    {time: date2, value: 540},
-    {time: new Date(), value: 200},
-  ];
+  $scope.samples = [];
   $scope.target = 0;
   $scope.rate = null;
   $scope.remaining = null;
   $scope.estimate = null;
+
+  var mock = 'down';
+  if (mock) {
+    var date1 = new Date();
+    var date2 = new Date();
+    date1.setMinutes(date1.getMinutes() - 30);
+    date2.setMinutes(date2.getMinutes() - 20);
+    if (mock == 'up') {
+      $scope.samples = [
+        {time: date1, value: 2},
+        {time: date2, value: 434},
+        {time: new Date(), value: 760},
+      ];
+      $scope.target = 1000;
+    } else if (mock == 'down') {
+      $scope.samples = [
+        {time: date1, value: 1000},
+        {time: date2, value: 540},
+        {time: new Date(), value: 200},
+      ];
+      $scope.target = 0;
+    }
+  }
 
   $scope.$watch('target', recalc);
   $scope.$watchCollection('samples', recalc);
@@ -66,8 +81,8 @@ howLongControllers.controller('SampleListCtrl', function ($scope, $filter) {
     var first = $scope.samples[0];
     var last = $scope.samples[$scope.samples.length - 1];
 
-    $scope.rate = computeRate(first, last);
-    $scope.remaining = $scope.target - last.value;
+    $scope.rate = Math.abs(computeRate(first, last));
+    $scope.remaining = Math.abs($scope.target - last.value);
     $scope.estimate = new Date(last.time.getTime() + ($scope.remaining / $scope.rate));
 
     var i, length;
@@ -78,21 +93,24 @@ howLongControllers.controller('SampleListCtrl', function ($scope, $filter) {
     // Figure out percentages
     var minTime = first.time.getTime();
     var maxTime = $scope.estimate.getTime();
-    var minValue = Math.min(first.value, $scope.target);
-    var maxValue = Math.max(first.value, $scope.target);
+    var minValue = first.value;
+    var maxValue = $scope.target;
     var points = [];
-    var valueRange = (maxValue - minValue);
-    var timeRange = (maxTime - minTime);
+    var minY = 0;
+    var maxY = 100;
+    var minX = 0;
+    var maxX = 100;
+    var mapTime = mapToRange.bind(undefined, minTime, maxTime, minY, maxY);
+    var mapValue = mapToRange.bind(undefined, minValue, maxValue, minX, maxX);
     $scope.samples.forEach(function(sample) {
-      var scaledTime = 100 * (sample.time - minTime) / timeRange;
-      var scaledValue = 100 * (sample.value - minValue) / valueRange;
+      var y = mapTime(sample.time);
       points.push([
-        [scaledValue, scaledTime],
-        [0, scaledTime]
+        [mapValue(sample.value), y],
+        [maxX, y]
       ]);
     });
     // Finish point
-    points.push([[100 * ($scope.target - minValue) / valueRange, 100]]);
+    points.push([[mapValue($scope.target), maxY], [maxX, maxY]]);
 
     $scope.polygons = [];
     for (i = 1, length = points.length; i < length; i++) {
@@ -101,5 +119,13 @@ howLongControllers.controller('SampleListCtrl', function ($scope, $filter) {
         [].concat(points[i-1],points[i]).join(' ')
       );
     }
+
+    // Tick marks
+    $scope.ticks = [minY, (maxY + minY) / 2, maxY];
+  }
+
+  function mapToRange(inputStart, inputEnd, outputMin, outputMax, input) {
+    var slope = (outputMax - outputMin) / (inputEnd - inputStart);
+    return outputMin + slope * (input - inputStart);
   }
 });

@@ -10,15 +10,26 @@
 <body ng-app="sampleApp" ng-controller="SampleListCtrl">
   <div class="container">
     <div class="row">
+      <div class="control-container medium-6 push-6 columns">
+        <h1>How Long?</h1>
+      </div>
+    </div>
+
+    <div class="row">
       <div class="graph-container medium-6 columns">
-        <div class="graph"></div>
+        <div class="graph">
+          <svg version="1.1" viewBox="-2 -2 104 104" preserveAspectRatio="xMinYMin meet" class="svg-content">
+            <line ng-repeat="tick in ticks" class="tick" stroke="yellow" stroke-width="0.5"
+              x1="0" ng-attr-y1="{{tick}}" x2="102" ng-attr-y2="{{tick}}" />
+            <polygon ng-repeat="polygon in polygons" ng-attr-points="{{polygon}}"
+              fill="red" stroke="yellow" stroke-width="0.5"/>
+          </svg>
+        </div>
       </div>
       <div class="control-container medium-6 columns">
-        <h1>How Long?</h1>
-
         <div class="row">
           <div class="small-5 columns">
-            <label>Sample Value</label>
+            <label>Value</label>
           </div>
           <div class="small-5 small-offset-2 columns">
             <label>Time</label>
@@ -80,15 +91,6 @@
             <label for="estimated-time">Estimate</label>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-6">
-        <svg version="1.1" viewBox="-1 -1 101 101" preserveAspectRatio="xMinYMin meet" class="svg-content">
-          <polygon ng-repeat="polygon in polygons" fill="red" stroke="blue" stroke-width="1"
-            ng-attr-points="{{polygon}}" />
-        </svg>
       </div>
     </div>
   </div>
