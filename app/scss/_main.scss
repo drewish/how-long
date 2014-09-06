@@ -81,3 +81,28 @@ input {
     margin-bottom: $em;
   }
 }
+
+svg {
+  shape-rendering: crispEdges;
+}
+text {
+  @extend .meta-text;
+}
+
+.segment text {
+  fill: $secondary;
+  text-anchor: end;
+}
+.segment polygon {
+  fill: $primary;
+  stroke: $secondary;
+}
+.segment:last-of-type polygon {
+  fill: $secondary;
+}
+.tick text {
+  fill: $secondary;
+}
+.tick line {
+  stroke: $secondary;
+}
