@@ -18,13 +18,21 @@
     <div class="row">
       <div class="graph-container medium-6 columns">
         <div class="graph">
-          <svg version="1.1" viewBox="-2 -2 104 104" preserveAspectRatio="xMinYMin meet" class="svg-content">
-            <line ng-repeat="tick in ticks" class="tick" stroke="yellow" stroke-width="0.5"
-              x1="0" ng-attr-y1="{{tick}}" x2="102" ng-attr-y2="{{tick}}" />
-            <polygon ng-repeat="segment in segments" ng-attr-points="{{segment.points}}"
-              fill="red" stroke="yellow" stroke-width="0.5"/>
-            <text ng-repeat="segment in segments" text-anchor="end" font-size="4"
-              ng-attr-x="{{segment.label.x}}" ng-attr-y="{{segment.label.y}}">
+          <svg version="1.1" ng-attr-width="{{chart.width}}" ng-attr-height="{{chart.height}}"
+            ng-attr-viewBox="0 0 {{chart.width}} {{chart.height}}"
+            preserveAspectRatio="xMinYMin meet" class="svg-content">
+
+            <line ng-repeat="tick in ticks" class="tick" stroke="yellow" stroke-width="1px"
+              ng-attr-x1="{{tick.x}}" ng-attr-y1="{{tick.y}}" x2="{{chart.width}}" ng-attr-y2="{{tick.y}}" />
+            <text ng-repeat="tick in ticks" class="tick-label"
+              ng-attr-x="{{tick.x - 2}}" ng-attr-y="{{tick.y - 4}}">
+              {{tick.label}}
+            </text>
+
+            <polygon ng-repeat="segment in segments" class="segment"
+              ng-attr-points="{{segment.points}}" fill="red" stroke="yellow" />
+            <text ng-repeat="segment in segments" text-anchor="end" class="segment-label"
+              ng-attr-x="{{segment.label.x - 2}}" ng-attr-y="{{segment.label.y - 4}}">
               {{segment.label.text | rate}}
             </text>
           </svg>

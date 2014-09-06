@@ -35,7 +35,10 @@ howLongControllers.controller('SampleListCtrl', function ($scope, $filter) {
   }
 
   $scope.$watch('target', recalc);
-  $scope.$watchCollection('samples', recalc);
+  $scope.$watchCollection('samples', function() {
+    $scope.samples = $filter('orderBy')($scope.samples, '"time"');
+    recalc();
+  });
 
   $scope.add = function() {
     $scope.samples.push({
@@ -66,7 +69,7 @@ howLongControllers.controller('SampleListCtrl', function ($scope, $filter) {
   function computeRate(earlierSample, laterSample) {
     var completed = laterSample.value - earlierSample.value;
     var intervalInMs = laterSample.time - earlierSample.time;
-    return completed / intervalInMs;
+    return Math.abs(completed / intervalInMs);
   }
 
   function mapToRange(inputStart, inputEnd, outputMin, outputMax, input) {
@@ -82,23 +85,35 @@ howLongControllers.controller('SampleListCtrl', function ($scope, $filter) {
       return;
     }
 
-    $scope.samples = $filter('orderBy')($scope.samples, '"time"');
     var first = $scope.samples[0];
     var last = $scope.samples[$scope.samples.length - 1];
-
-    $scope.rate = Math.abs(computeRate(first, last));
+    $scope.rate = computeRate(first, last);
     $scope.remaining = Math.abs($scope.target - last.value);
     $scope.estimate = new Date(last.time.getTime() + ($scope.remaining / $scope.rate));
 
-    // Figure out percentages
-    var minY = 0;
-    var maxY = 100;
-    var minX = 0;
-    var maxX = 100;
+    updateSegments();
+  }
+
+  function updateSegments() {
+    $scope.segments = [];
+
+    var graph = document.getElementsByClassName('graph')[0];
+
+    $scope.chart = {
+      width: graph.offsetWidth,
+      height: graph.offsetWidth * 1.5, // control the aspect ratio here...
+    };
+
+    // Add some margins
+    var minY = 20;
+    var maxY = $scope.chart.height - 10;
+    var minX = 10;
+    var maxX = $scope.chart.width - 10;
+
     var mapTime = mapToRange.bind(undefined,
-      first.time.getTime(), $scope.estimate.getTime(), minY, maxY);
+      $scope.samples[0].time.getTime(), $scope.estimate.getTime(), minY, maxY);
     var mapValue = mapToRange.bind(undefined,
-      first.value, $scope.target, minX, maxX);
+      $scope.samples[0].value, $scope.target, minX, maxX);
 
     var points = $scope.samples.concat({
         // Simulate a sample for the estimated completion
@@ -111,27 +126,29 @@ howLongControllers.controller('SampleListCtrl', function ($scope, $filter) {
         });
       });
 
-    var segments = [];
     var i, length;
     for (i = 1, length = points.length; i < length; i++) {
       var prior = points[i - 1];
       var current = points[i];
-      segments.push({
+      $scope.segments.push({
         points: [
           [maxX, prior.y], [prior.x, prior.y],
           [current.x, current.y], [maxX, current.y]
         ].join(' '),
         label: {
-          text: Math.abs(computeRate(prior, current)),
+          text: computeRate(prior, current),
           x: maxX,
           y: current.y,
         }
       });
     }
-    $scope.segments = segments;
 
     // Tick marks
-    $scope.ticks = [minY, (maxY + minY) / 2, maxY];
+    $scope.ticks = [
+      { x: minX, y: minY, label: '0%' },
+      { x: minX, y: (maxY + minY) / 2, label: '50%' },
+      { x: minX, y: maxY, label: '100%' },
+    ];
   }
 
 });
