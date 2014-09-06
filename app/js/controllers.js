@@ -49,7 +49,7 @@ howLongControllers.controller('SampleListCtrl', function ($scope, $filter) {
   };
 
   $scope.remove = function(sample) {
-    var index = $scope.samples.indexOf(sample)
+    var index = $scope.samples.indexOf(sample);
     $scope.samples.splice(index, 1);
   };
 
