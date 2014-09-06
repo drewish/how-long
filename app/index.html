@@ -21,8 +21,12 @@
           <svg version="1.1" viewBox="-2 -2 104 104" preserveAspectRatio="xMinYMin meet" class="svg-content">
             <line ng-repeat="tick in ticks" class="tick" stroke="yellow" stroke-width="0.5"
               x1="0" ng-attr-y1="{{tick}}" x2="102" ng-attr-y2="{{tick}}" />
-            <polygon ng-repeat="polygon in polygons" ng-attr-points="{{polygon}}"
+            <polygon ng-repeat="segment in segments" ng-attr-points="{{segment.points}}"
               fill="red" stroke="yellow" stroke-width="0.5"/>
+            <text ng-repeat="segment in segments" text-anchor="end" font-size="4"
+              ng-attr-x="{{segment.label.x}}" ng-attr-y="{{segment.label.y}}">
+              {{segment.label.text | rate}}
+            </text>
           </svg>
         </div>
       </div>
@@ -37,7 +41,6 @@
         </div>
 
         <div class="row" ng-repeat="sample in samples">
-          <!-- {{sample.rate | rate}} -->
           <!-- <button ng-click="remove(sample)">Remove</button> -->
           <div class="small-5 columns sample_value">
             <h3>{{sample.value}}</h3>

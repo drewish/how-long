@@ -69,6 +69,11 @@ howLongControllers.controller('SampleListCtrl', function ($scope, $filter) {
     return completed / intervalInMs;
   }
 
+  function mapToRange(inputStart, inputEnd, outputMin, outputMax, input) {
+    var slope = (outputMax - outputMin) / (inputEnd - inputStart);
+    return outputMin + slope * (input - inputStart);
+  }
+
   function recalc() {
     if ($scope.samples.length < 2) {
       $scope.rate = null;
@@ -85,47 +90,48 @@ howLongControllers.controller('SampleListCtrl', function ($scope, $filter) {
     $scope.remaining = Math.abs($scope.target - last.value);
     $scope.estimate = new Date(last.time.getTime() + ($scope.remaining / $scope.rate));
 
-    var i, length;
-    for (i = 1, length = $scope.samples.length; i < length; i++) {
-      $scope.samples[i].rate = computeRate($scope.samples[i - 1], $scope.samples[i]);
-    }
-
     // Figure out percentages
-    var minTime = first.time.getTime();
-    var maxTime = $scope.estimate.getTime();
-    var minValue = first.value;
-    var maxValue = $scope.target;
-    var points = [];
     var minY = 0;
     var maxY = 100;
     var minX = 0;
     var maxX = 100;
-    var mapTime = mapToRange.bind(undefined, minTime, maxTime, minY, maxY);
-    var mapValue = mapToRange.bind(undefined, minValue, maxValue, minX, maxX);
-    $scope.samples.forEach(function(sample) {
-      var y = mapTime(sample.time);
-      points.push([
-        [mapValue(sample.value), y],
-        [maxX, y]
-      ]);
-    });
-    // Finish point
-    points.push([[mapValue($scope.target), maxY], [maxX, maxY]]);
+    var mapTime = mapToRange.bind(undefined,
+      first.time.getTime(), $scope.estimate.getTime(), minY, maxY);
+    var mapValue = mapToRange.bind(undefined,
+      first.value, $scope.target, minX, maxX);
 
-    $scope.polygons = [];
+    var points = $scope.samples.concat({
+        // Simulate a sample for the estimated completion
+        time: $scope.estimate,
+        value: $scope.target,
+      }).map(function(sample) {
+        return angular.extend(sample, {
+          y: mapTime(sample.time),
+          x: mapValue(sample.value),
+        });
+      });
+
+    var segments = [];
+    var i, length;
     for (i = 1, length = points.length; i < length; i++) {
-      points[i-1].reverse();
-      $scope.polygons.push(
-        [].concat(points[i-1],points[i]).join(' ')
-      );
+      var prior = points[i - 1];
+      var current = points[i];
+      segments.push({
+        points: [
+          [maxX, prior.y], [prior.x, prior.y],
+          [current.x, current.y], [maxX, current.y]
+        ].join(' '),
+        label: {
+          text: Math.abs(computeRate(prior, current)),
+          x: maxX,
+          y: current.y,
+        }
+      });
     }
+    $scope.segments = segments;
 
     // Tick marks
     $scope.ticks = [minY, (maxY + minY) / 2, maxY];
   }
 
-  function mapToRange(inputStart, inputEnd, outputMin, outputMax, input) {
-    var slope = (outputMax - outputMin) / (inputEnd - inputStart);
-    return outputMin + slope * (input - inputStart);
-  }
 });

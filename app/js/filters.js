@@ -4,22 +4,27 @@
 angular.module('howLongFilters', [])
   .filter('rate', function() {
     var units = {
-      'second': 1000,
-      'minute': 1000 * 60,
-      'hour':   1000 * 60 * 60,
-      'day':    1000 * 60 * 60 * 24,
+      'sec':  1000,
+      'min':  1000 * 60,
+      'hour': 1000 * 60 * 60,
+      'day':  1000 * 60 * 60 * 24,
     };
 
     return function(input, unit, digits) {
-      if (isNaN(parseFloat(input))) {
+      var float = parseFloat(input);
+      var int = parseInt(input);
+      if (isNaN(float)) {
         return '';
       }
       digits = isNaN(parseInt(digits)) ? 3 : digits;
-      unit = unit || 'minute';
+      unit = unit || 'min';
       if (!units[unit]) {
         return '';
       }
-      var number = (parseFloat(input) * units[unit]).toFixed(digits);
+      var number = (input * units[unit])
+      if (number % 1 !== 0) {
+        number = number.toFixed(digits);
+      }
       return number + ' / ' + unit;
     };
   });
