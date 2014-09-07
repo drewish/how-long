@@ -12,11 +12,11 @@ angular.module('howLongFilters', [])
 
     return function(input, unit, maxDigits) {
       var float = parseFloat(input);
-      var int = parseInt(input);
+      var int = parseInt(input, 10);
       if (isNaN(float)) {
         return '';
       }
-      maxDigits = isNaN(parseInt(maxDigits)) ? 3 : maxDigits;
+      maxDigits = isNaN(parseInt(maxDigits, 10)) ? 3 : maxDigits;
       unit = unit || 'min';
       if (!units[unit]) {
         return '';
