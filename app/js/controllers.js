@@ -4,7 +4,8 @@
 
 var howLongControllers = angular.module('howLongControllers', []);
 
-howLongControllers.controller('SampleListCtrl', function ($scope, $filter) {
+howLongControllers.controller('SampleListCtrl',
+    ['$scope', '$filter', function ($scope, $filter) {
   $scope.samples = [];
   $scope.target = 0;
   $scope.rate = null;
@@ -151,4 +152,4 @@ howLongControllers.controller('SampleListCtrl', function ($scope, $filter) {
     ];
   }
 
-});
+}]);
