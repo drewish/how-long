@@ -52,11 +52,11 @@
         <div class="row" ng-repeat="sample in samples">
           <!-- <button ng-click="remove(sample)">Remove</button> -->
           <div class="small-5 columns sample_value">
-            <h3>{{sample.value}}</h3>
+            <h3 ng-bind="sample.value"></h3>
           </div>
           <div class="small-2 columns at"><label>at</label></div>
           <div class="small-5 columns sample_time">
-            <h3>{{sample.time | date:'mediumTime'}}</h3>
+            <h3 ng-bind="sample.time | date:'mediumTime'"></h3>
           </div>
         </div>
 
@@ -92,14 +92,14 @@
             <input type="number" size="60" ng-model="target" name="target">
           </div>
           <div class="columns">
-            <h1 class="remaining">{{remaining}}</h1>
+            <h1 class="remaining" ng-bind="remaining"></h1>
             <label for="estimated-time">Remaining</label>
 
-            <h1>{{rate | rate}}</h1>
+            <h1 ng-bind="rate | rate"></h1>
             <label for="rate">Rate</label>
 
             <h1 am-time-ago="estimate"></h1>
-            <h1>{{estimate | date:'short'}}</h1>
+            <h1 ng-bind="estimate | date:'short'"></h1>
             <label for="estimated-time">Estimate</label>
           </div>
         </div>
