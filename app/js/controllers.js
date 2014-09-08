@@ -5,12 +5,14 @@
 var howLongControllers = angular.module('howLongControllers', []);
 
 howLongControllers.controller('SampleListCtrl',
-    ['$scope', '$filter', function ($scope, $filter) {
+    ['$scope', '$filter', '$document', function ($scope, $filter, $document) {
   $scope.samples = [];
   $scope.target = 0;
   $scope.rate = null;
   $scope.remaining = null;
   $scope.estimate = null;
+  $scope.segments = [];
+  $scope.ticks = [];
 
   var mock = 'down';
   if (mock) {
@@ -83,6 +85,8 @@ howLongControllers.controller('SampleListCtrl',
       $scope.rate = null;
       $scope.remaining = null;
       $scope.estimate = null;
+      $scope.segments = [];
+      $scope.ticks = [];
       return;
     }
 
@@ -98,7 +102,7 @@ howLongControllers.controller('SampleListCtrl',
   function updateSegments() {
     $scope.segments = [];
 
-    var graph = document.getElementsByClassName('graph')[0];
+    var graph = $document[0].querySelector('.graph');
 
     $scope.chart = {
       width: graph.offsetWidth,

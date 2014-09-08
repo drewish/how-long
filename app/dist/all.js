@@ -24809,7 +24809,7 @@ var styleDirective = valueFn({
     }
 }).call(this);
 
-/* angular-moment.js / v0.8.1 / (c) 2013, 2014 Uri Shaked / MIT Licence */
+/* angular-moment.js / v0.8.2 / (c) 2013, 2014 Uri Shaked / MIT Licence */
 
 /* global define */
 
@@ -25037,7 +25037,7 @@ var styleDirective = valueFn({
 						cancelTimer();
 					});
 
-					scope.$on('amMoment:languageChange', function () {
+					scope.$on('amMoment:localeChanged', function () {
 						updateMoment();
 					});
 				};
@@ -25049,6 +25049,7 @@ var styleDirective = valueFn({
 		 * @module angularMoment
 		 */
 			.service('amMoment', ['moment', '$rootScope', '$log', 'angularMomentConfig', function (moment, $rootScope, $log, angularMomentConfig) {
+				var that = this;
 				/**
 				 * @ngdoc property
 				 * @name angularMoment:amMoment#preprocessors
@@ -25065,21 +25066,39 @@ var styleDirective = valueFn({
 
 				/**
 				 * @ngdoc function
-				 * @name angularMoment.service.amMoment#changeLanguage
+				 * @name angularMoment.service.amMoment#changeLocale
 				 * @methodOf angularMoment.service.amMoment
 				 *
 				 * @description
-				 * Changes the language for moment.js and updates all the am-time-ago directive instances
-				 * with the new language.
+				 * Changes the locale for moment.js and updates all the am-time-ago directive instances
+				 * with the new locale. Also broadcasts a `amMoment:localeChanged` event on $rootScope.
 				 *
-				 * @param {string} lang 2-letter language code (e.g. en, es, ru, etc.)
+				 * @param {string} locale 2-letter language code (e.g. en, es, ru, etc.)
 				 */
-				this.changeLanguage = function (lang) {
-					var result = moment.lang(lang);
-					if (angular.isDefined(lang)) {
+				this.changeLocale = function (locale) {
+					var result = (moment.locale||moment.lang)(locale);
+					if (angular.isDefined(locale)) {
+						$rootScope.$broadcast('amMoment:localeChanged');
+
+						// The following event is deprecated and will be removed in an upcoming
+						// major release.
 						$rootScope.$broadcast('amMoment:languageChange');
 					}
 					return result;
+				};
+
+				/**
+				 * @ngdoc function
+				 * @name angularMoment.service.amMoment#changeLanguage
+				 * @methodOf angularMoment.service.amMoment
+				 * @deprecated Please use changeLocale() instead.
+				 *
+				 * @description
+				 * Deprecated. Please use changeLocale() instead.
+				 */
+				this.changeLanguage = function (lang) {
+					$log.warn('angular-moment: Usage of amMoment.changeLanguage() is deprecated. Please use changeLocale()');
+					return that.changeLocale(lang);
 				};
 
 				/**
@@ -25225,12 +25244,14 @@ var howLongApp = angular.module('howLongApp', [
 var howLongControllers = angular.module('howLongControllers', []);
 
 howLongControllers.controller('SampleListCtrl',
-    ['$scope', '$filter', function ($scope, $filter) {
+    ['$scope', '$filter', '$document', function ($scope, $filter, $document) {
   $scope.samples = [];
   $scope.target = 0;
   $scope.rate = null;
   $scope.remaining = null;
   $scope.estimate = null;
+  $scope.segments = [];
+  $scope.ticks = [];
 
   var mock = 'down';
   if (mock) {
@@ -25303,6 +25324,8 @@ howLongControllers.controller('SampleListCtrl',
       $scope.rate = null;
       $scope.remaining = null;
       $scope.estimate = null;
+      $scope.segments = [];
+      $scope.ticks = [];
       return;
     }
 
@@ -25318,7 +25341,7 @@ howLongControllers.controller('SampleListCtrl',
   function updateSegments() {
     $scope.segments = [];
 
-    var graph = document.getElementsByClassName('graph')[0];
+    var graph = $document[0].querySelector('.graph');
 
     $scope.chart = {
       width: graph.offsetWidth,
