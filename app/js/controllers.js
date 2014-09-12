@@ -14,7 +14,7 @@ howLongControllers.controller('SampleListCtrl',
   $scope.segments = [];
   $scope.ticks = [];
 
-  var mock = 'down';
+  var mock = '';
   if (mock) {
     var date1 = new Date();
     var date2 = new Date();
