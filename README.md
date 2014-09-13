@@ -1,4 +1,14 @@
-# To alter styles, and minify css and js assets
-- Run `npm install`
-- To build: `gulp`
-- To watch while developing: `gulp watch`
+# How Long?
+
+Is an angular app to help you estimate the completion time of a long running
+task.
+
+## Installation
+
+`npm install`
+
+## To run locally
+
+`npm start`
+
+Then open http://localhost:8000/app/

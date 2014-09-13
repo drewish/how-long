@@ -1,12 +1,13 @@
 var gulp = require('gulp');
-var sass = require('gulp-sass');
 var autoprefixer = require('gulp-autoprefixer');
 var concat = require('gulp-concat');
-var uglify = require('gulp-uglify');
-var rename = require('gulp-rename');
+var connect = require('gulp-connect');
+var mainBowerFiles = require('main-bower-files');
 var minifyCSS = require('gulp-minify-css');
 var plumber = require('gulp-plumber');
-var mainBowerFiles = require('main-bower-files');
+var rename = require('gulp-rename');
+var sass = require('gulp-sass');
+var uglify = require('gulp-uglify');
 
 var onError = function(e){
   console.log(e);
@@ -39,9 +40,13 @@ gulp.task('scripts', function() {
 });
 
 
-// Watch
+// Run a local webserver and watch for changes
 gulp.task('watch', function() {
   gulp.start('default');
+  connect.server({
+    port: 8000,
+    // livereload: true
+  });
   gulp.watch('app/scss/*.scss', ['styles']);
   gulp.watch('app/js/*.js', ['scripts']);
 });
