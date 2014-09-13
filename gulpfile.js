@@ -1,3 +1,6 @@
+"use strict";
+/* global require */
+
 var gulp = require('gulp');
 var autoprefixer = require('gulp-autoprefixer');
 var concat = require('gulp-concat');
