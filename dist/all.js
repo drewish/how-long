@@ -21953,7 +21953,7 @@ var styleDirective = valueFn({
 
 !window.angular.$$csp() && window.angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\\:form{display:block;}.ng-animate-block-transitions{transition:0s all!important;-webkit-transition:0s all!important;}.ng-hide-add-active,.ng-hide-remove{display:block!important;}</style>');
 //! moment.js
-//! version : 2.8.3
+//! version : 2.8.2
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
@@ -21964,7 +21964,7 @@ var styleDirective = valueFn({
     ************************************/
 
     var moment,
-        VERSION = '2.8.3',
+        VERSION = '2.8.2',
         // the global-scope this is NOT the global object in Node.js
         globalScope = typeof global !== 'undefined' ? global : this,
         oldGlobalMoment,
@@ -23447,9 +23447,6 @@ var styleDirective = valueFn({
         for (i = 0; i < config._f.length; i++) {
             currentScore = 0;
             tempConfig = copyConfig({}, config);
-            if (config._useUTC != null) {
-                tempConfig._useUTC = config._useUTC;
-            }
             tempConfig._pf = defaultParsingFlags();
             tempConfig._f = config._f[i];
             makeDateFromStringAndFormat(tempConfig);
@@ -23514,14 +23511,6 @@ var styleDirective = valueFn({
         }
     }
 
-    function map(arr, fn) {
-        var res = [], i;
-        for (i = 0; i < arr.length; ++i) {
-            res.push(fn(arr[i], i));
-        }
-        return res;
-    }
-
     function makeDateFromInput(config) {
         var input = config._i, matched;
         if (input === undefined) {
@@ -23533,9 +23522,7 @@ var styleDirective = valueFn({
         } else if (typeof input === 'string') {
             makeDateFromString(config);
         } else if (isArray(input)) {
-            config._a = map(input.slice(0), function (obj) {
-                return parseInt(obj, 10);
-            });
+            config._a = input.slice(0);
             dateFromConfig(config);
         } else if (typeof(input) === 'object') {
             dateFromObject(config);
@@ -24090,7 +24077,7 @@ var styleDirective = valueFn({
                 this._isUTC = false;
 
                 if (keepLocalTime) {
-                    this.add(this._dateTzOffset(), 'm');
+                    this.add(this._d.getTimezoneOffset(), 'm');
                 }
             }
             return this;
@@ -24108,7 +24095,7 @@ var styleDirective = valueFn({
         diff : function (input, units, asFloat) {
             var that = makeAs(input, this),
                 zoneDiff = (this.zone() - that.zone()) * 6e4,
-                diff, output, daysAdjust;
+                diff, output;
 
             units = normalizeUnits(units);
 
@@ -24119,12 +24106,11 @@ var styleDirective = valueFn({
                 output = ((this.year() - that.year()) * 12) + (this.month() - that.month());
                 // adjust by taking difference in days, average number of days
                 // and dst in the given months.
-                daysAdjust = (this - moment(this).startOf('month')) -
-                    (that - moment(that).startOf('month'));
+                output += ((this - moment(this).startOf('month')) -
+                        (that - moment(that).startOf('month'))) / diff;
                 // same as above but with zones, to negate all dst
-                daysAdjust -= ((this.zone() - moment(this).startOf('month').zone()) -
-                        (that.zone() - moment(that).startOf('month').zone())) * 6e4;
-                output += daysAdjust / diff;
+                output -= ((this.zone() - moment(this).startOf('month').zone()) -
+                        (that.zone() - moment(that).startOf('month').zone())) * 6e4 / diff;
                 if (units === 'year') {
                     output = output / 12;
                 }
@@ -24233,33 +24219,18 @@ var styleDirective = valueFn({
         },
 
         isAfter: function (input, units) {
-            units = normalizeUnits(typeof units !== 'undefined' ? units : 'millisecond');
-            if (units === 'millisecond') {
-                input = moment.isMoment(input) ? input : moment(input);
-                return +this > +input;
-            } else {
-                return +this.clone().startOf(units) > +moment(input).startOf(units);
-            }
+            units = typeof units !== 'undefined' ? units : 'millisecond';
+            return +this.clone().startOf(units) > +moment(input).startOf(units);
         },
 
         isBefore: function (input, units) {
-            units = normalizeUnits(typeof units !== 'undefined' ? units : 'millisecond');
-            if (units === 'millisecond') {
-                input = moment.isMoment(input) ? input : moment(input);
-                return +this < +input;
-            } else {
-                return +this.clone().startOf(units) < +moment(input).startOf(units);
-            }
+            units = typeof units !== 'undefined' ? units : 'millisecond';
+            return +this.clone().startOf(units) < +moment(input).startOf(units);
         },
 
         isSame: function (input, units) {
-            units = normalizeUnits(units || 'millisecond');
-            if (units === 'millisecond') {
-                input = moment.isMoment(input) ? input : moment(input);
-                return +this === +input;
-            } else {
-                return +this.clone().startOf(units) === +makeAs(input, this).startOf(units);
-            }
+            units = units || 'ms';
+            return +this.clone().startOf(units) === +makeAs(input, this).startOf(units);
         },
 
         min: deprecate(
@@ -24299,7 +24270,7 @@ var styleDirective = valueFn({
                     input = input * 60;
                 }
                 if (!this._isUTC && keepLocalTime) {
-                    localAdjust = this._dateTzOffset();
+                    localAdjust = this._d.getTimezoneOffset();
                 }
                 this._offset = input;
                 this._isUTC = true;
@@ -24317,7 +24288,7 @@ var styleDirective = valueFn({
                     }
                 }
             } else {
-                return this._isUTC ? offset : this._dateTzOffset();
+                return this._isUTC ? offset : this._d.getTimezoneOffset();
             }
             return this;
         },
@@ -24421,15 +24392,10 @@ var styleDirective = valueFn({
         // instance.  Otherwise, it will return the locale configuration
         // variables for this instance.
         locale : function (key) {
-            var newLocaleData;
-
             if (key === undefined) {
                 return this._locale._abbr;
             } else {
-                newLocaleData = moment.localeData(key);
-                if (newLocaleData != null) {
-                    this._locale = newLocaleData;
-                }
+                this._locale = moment.localeData(key);
                 return this;
             }
         },
@@ -24440,19 +24406,14 @@ var styleDirective = valueFn({
                 if (key === undefined) {
                     return this.localeData();
                 } else {
-                    return this.locale(key);
+                    this._locale = moment.localeData(key);
+                    return this;
                 }
             }
         ),
 
         localeData : function () {
             return this._locale;
-        },
-
-        _dateTzOffset : function () {
-            // On Firefox.24 Date#getTimezoneOffset returns a floating point.
-            // https://github.com/moment/moment/pull/1871
-            return Math.round(this._d.getTimezoneOffset() / 15) * 15;
         }
     });
 
@@ -24650,21 +24611,19 @@ var styleDirective = valueFn({
             var days, months;
             units = normalizeUnits(units);
 
+            days = this._days + this._milliseconds / 864e5;
             if (units === 'month' || units === 'year') {
-                days = this._days + this._milliseconds / 864e5;
                 months = this._months + daysToYears(days) * 12;
                 return units === 'month' ? months : months / 12;
             } else {
-                // handle milliseconds separately because of floating point math errors (issue #1867)
-                days = this._days + yearsToDays(this._months / 12);
+                days += yearsToDays(this._months / 12);
                 switch (units) {
-                    case 'week': return days / 7 + this._milliseconds / 6048e5;
-                    case 'day': return days + this._milliseconds / 864e5;
-                    case 'hour': return days * 24 + this._milliseconds / 36e5;
-                    case 'minute': return days * 24 * 60 + this._milliseconds / 6e4;
-                    case 'second': return days * 24 * 60 * 60 + this._milliseconds / 1000;
-                    // Math.floor prevents floating point math errors here
-                    case 'millisecond': return Math.floor(days * 24 * 60 * 60 * 1000) + this._milliseconds;
+                    case 'week': return days / 7;
+                    case 'day': return days;
+                    case 'hour': return days * 24;
+                    case 'minute': return days * 24 * 60;
+                    case 'second': return days * 24 * 60 * 60;
+                    case 'millisecond': return days * 24 * 60 * 60 * 1000;
                     default: throw new Error('Unknown unit ' + units);
                 }
             }
@@ -24809,7 +24768,7 @@ var styleDirective = valueFn({
     }
 }).call(this);
 
-/* angular-moment.js / v0.8.2 / (c) 2013, 2014 Uri Shaked / MIT Licence */
+/* angular-moment.js / v0.8.1 / (c) 2013, 2014 Uri Shaked / MIT Licence */
 
 /* global define */
 
@@ -25037,7 +24996,7 @@ var styleDirective = valueFn({
 						cancelTimer();
 					});
 
-					scope.$on('amMoment:localeChanged', function () {
+					scope.$on('amMoment:languageChange', function () {
 						updateMoment();
 					});
 				};
@@ -25049,7 +25008,6 @@ var styleDirective = valueFn({
 		 * @module angularMoment
 		 */
 			.service('amMoment', ['moment', '$rootScope', '$log', 'angularMomentConfig', function (moment, $rootScope, $log, angularMomentConfig) {
-				var that = this;
 				/**
 				 * @ngdoc property
 				 * @name angularMoment:amMoment#preprocessors
@@ -25066,39 +25024,21 @@ var styleDirective = valueFn({
 
 				/**
 				 * @ngdoc function
-				 * @name angularMoment.service.amMoment#changeLocale
+				 * @name angularMoment.service.amMoment#changeLanguage
 				 * @methodOf angularMoment.service.amMoment
 				 *
 				 * @description
-				 * Changes the locale for moment.js and updates all the am-time-ago directive instances
-				 * with the new locale. Also broadcasts a `amMoment:localeChanged` event on $rootScope.
+				 * Changes the language for moment.js and updates all the am-time-ago directive instances
+				 * with the new language.
 				 *
-				 * @param {string} locale 2-letter language code (e.g. en, es, ru, etc.)
+				 * @param {string} lang 2-letter language code (e.g. en, es, ru, etc.)
 				 */
-				this.changeLocale = function (locale) {
-					var result = (moment.locale||moment.lang)(locale);
-					if (angular.isDefined(locale)) {
-						$rootScope.$broadcast('amMoment:localeChanged');
-
-						// The following event is deprecated and will be removed in an upcoming
-						// major release.
+				this.changeLanguage = function (lang) {
+					var result = moment.lang(lang);
+					if (angular.isDefined(lang)) {
 						$rootScope.$broadcast('amMoment:languageChange');
 					}
 					return result;
-				};
-
-				/**
-				 * @ngdoc function
-				 * @name angularMoment.service.amMoment#changeLanguage
-				 * @methodOf angularMoment.service.amMoment
-				 * @deprecated Please use changeLocale() instead.
-				 *
-				 * @description
-				 * Deprecated. Please use changeLocale() instead.
-				 */
-				this.changeLanguage = function (lang) {
-					$log.warn('angular-moment: Usage of amMoment.changeLanguage() is deprecated. Please use changeLocale()');
-					return that.changeLocale(lang);
 				};
 
 				/**
@@ -25253,7 +25193,7 @@ howLongControllers.controller('SampleListCtrl',
   $scope.segments = [];
   $scope.ticks = [];
 
-  var mock = 'down';
+  var mock = '';
   if (mock) {
     var date1 = new Date();
     var date2 = new Date();

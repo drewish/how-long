@@ -61,7 +61,7 @@
         </div>
 
         <div class="row">
-          <form name="form" ng-submit="add()">
+          <form name="form" ng-submit="add()" ng-class="{'error' : newsample.$invalid}">
             <div class="small-5 columns sample_value">
               <input ng-model="newsample.value" type="number" min="1" name="value" size="60" required>
             </div>

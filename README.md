@@ -11,4 +11,4 @@ task.
 
 `npm start`
 
-Then open http://localhost:8000/app/
+Then open http://localhost:8000/
