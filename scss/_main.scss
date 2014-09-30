@@ -58,6 +58,12 @@ section {
   .amp {
     font-size: $em * 2;
     font-weight: 300;
+    display: inline-block;
+    width: $em * 2;
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    margin-left: -$em;
   }
 
   a {
@@ -68,7 +74,7 @@ section {
   }
 
   .who {
-    border-bottom: 1px solid $primary;
+    border-bottom: 1px solid $border-color;
 
     a,
     .amp {
@@ -78,16 +84,36 @@ section {
     a {
       position: relative;
       top: -6px;
+      width: 50%;
     }
-  }
 
-  .license {
-    border-right: 1px solid $primary;
-  }
+    a:first-child {
+      padding-right: $em * 1.5;
+      text-align: right;
+    }
+
+    a:last-child {
+      padding-left: $em * 1.5;
+      text-align: left;
+    }
+  }  
 
   .license,
   .repo {
     @extend .small-caps;
+    width: 50%;
+    text-align: left;
+    padding: $em/2 0;
+  }
+
+  .license {
+    border-right: 1px solid $border-color;
+    text-align: right;
+    padding-right: $em * 1.5;
+  }
+
+  .repo {
+    padding-left: $em * 1.5;
   }
 }
 
@@ -136,8 +162,32 @@ input {
   }
 }
 
+.add-sample {
+  font-weight: bold;
+}
+
+.empty-state {
+  margin-top: 15%;
+  position: relative;
+
+  &:after {
+    content: '';
+    display: block;
+    border-top: 0 solid $bgdark2;
+    border-left: $em*2 solid $bgdark2;
+    border-bottom: $em solid transparent; 
+    position: absolute;
+    right: -$em*2;
+    top: 0;
+  }
+}
+
+.graph-container {
+  height: 100%;
+}
+
 svg {
-  shape-rendering: crispEdges;
+  shape-rendering: auto;
 }
 text {
   @extend .meta-text;
@@ -158,5 +208,5 @@ text {
   fill: $secondary;
 }
 .tick line {
-  stroke: $secondary;
+  stroke: $border-color;
 }

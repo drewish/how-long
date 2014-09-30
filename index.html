@@ -17,6 +17,19 @@
 
     <div class="row">
       <div class="graph-container medium-6 columns">
+
+        <div class="columns">
+          <section class="well empty-state">
+            <div class="meta-text text-center" ng-show="samples.length == 0">
+              Enter <em>two or more samples</em> to know how long a
+              task will take to complete.
+            </div>
+            <div class="meta-text text-center" ng-show="samples.length == 1">
+              Just <strong>one</strong> more sample needed.
+            </div>
+          </section>
+        </div>
+
         <div class="graph">
           <svg version="1.1" ng-attr-viewBox="0 0 {{chart.width}} {{chart.height}}"
             ng-attr-width="{{chart.width}}" ng-attr-height="{{chart.height}}"
@@ -69,21 +82,11 @@
             <div class="small-5 columns sample_time">
               <input ng-model="newsample.time" type="time" name="time" size="60">
             </div>
+            <div class="columns"><a href="#" class="add-sample meta-text">+ Add sample</a></div>
           </form>
         </div>
 
         <div class="row" ng-show="samples.length < 2">
-          <div class="columns">
-            <section class="well">
-              <div class="meta-text text-center" ng-show="samples.length == 0">
-                Enter <em>two or more samples</em> to know how long a
-                task will take to complete.
-              </div>
-              <div class="meta-text text-center" ng-show="samples.length == 1">
-                Just <strong>one</strong> more sample needed.
-              </div>
-            </section>
-          </div>
         </div>
 
         <div class="row">
@@ -95,11 +98,11 @@
             <h1 class="remaining" ng-bind="remaining"></h1>
             <label for="estimated-time">Remaining</label>
 
-            <h1 ng-bind="rate | rate"></h1>
+            <h3 ng-bind="rate | rate"></h1>
             <label for="rate">Rate</label>
 
-            <h1 am-time-ago="estimate"></h1>
-            <h1 ng-bind="estimate | date:'short'"></h1>
+            <h3 am-time-ago="estimate"></h1>
+            <h3 ng-bind="estimate | date:'short'"></h1>
             <label for="estimated-time">Estimate</label>
           </div>
         </div>
@@ -111,12 +114,9 @@
     <div class="license-container">
       <span>A thing made by</span>
       <div class="who">
-        <a href="https://twitter.com/drewish">@Drewish</a>
-        <span class="amp">&amp;</span>
-        <a href="https://twitter.com/ZacHalbert">@ZacHalbert</a>
+        <a href="https://twitter.com/drewish">@Drewish</a><span class="amp">&amp;</span><a href="https://twitter.com/ZacHalbert">@ZacHalbert</a>
       </div>
-      <a href="http://opensource.org/licenses/MIT" class="license">MIT License</a>
-      <a href="https://github.com/drewish/how-long/" class="repo">View on Github</a>
+      <a href="http://opensource.org/licenses/MIT" class="license">MIT License</a><a href="https://github.com/drewish/how-long/" class="repo">View on Github</a>
     </div>
   </footer>
 

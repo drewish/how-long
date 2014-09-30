@@ -7,10 +7,12 @@ $primary:           #FFF6BA;
 $secondary:         #FF8256;
 
 $headline-color:    $primary;
-$text-color:        $primary;
+$text-color:        #FAC48B;
 
 $link-color:        $primary;
 $link-hover-color:  lighten($primary, 20%);
+
+$border-color:      #F7AB78;
 
 $form-default:      $secondary;
 $form-focus:        #fff;
