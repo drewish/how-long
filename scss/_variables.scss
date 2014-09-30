@@ -9,8 +9,8 @@ $secondary:         #FF8256;
 $headline-color:    $primary;
 $text-color:        $primary;
 
-$link-color:        $secondary;
-$link-hover-color:  darken($secondary, 30%);
+$link-color:        $primary;
+$link-hover-color:  lighten($primary, 20%);
 
 $form-default:      $secondary;
 $form-focus:        #fff;

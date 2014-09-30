@@ -45,10 +45,14 @@ a {
   }
 }
 
-.meta-text {
-  @extend small;
+.small-caps {
   text-transform: uppercase;
   letter-spacing: 0.15em;
+}
+
+.meta-text {
+  @extend small;
+  @extend .small-caps;
 }
 
 .big-text {

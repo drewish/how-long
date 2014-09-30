@@ -3,6 +3,11 @@ body {
   color: $text-color;
   font-size: $em;
   line-height: $line-height;
+  min-width: $em * 20; //320
+}
+
+.container {
+  min-height: 100%;
 }
 
 a,
@@ -40,6 +45,55 @@ section {
 
 .control-container {
   padding-top: $lead * 1.5;
+}
+
+.site-footer {
+  text-align: center;
+  margin: $lead*2 0;
+
+  span {
+    @extend .meta-text;
+  }
+
+  .amp {
+    font-size: $em * 2;
+    font-weight: 300;
+  }
+
+  a {
+    font-weight: bold;
+    font-size: $em;
+    display: inline-block;
+    padding: ($em / 2) $em;
+  }
+
+  .who {
+    border-bottom: 1px solid $primary;
+
+    a,
+    .amp {
+      line-height: $em * 2;
+    }
+
+    a {
+      position: relative;
+      top: -6px;
+    }
+  }
+
+  .license {
+    border-right: 1px solid $primary;
+  }
+
+  .license,
+  .repo {
+    @extend .small-caps;
+  }
+}
+
+.license-container {
+  width: $em * 20;
+  margin: 0 auto;
 }
 
 input {
