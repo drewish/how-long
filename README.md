@@ -11,7 +11,7 @@ task.
 
 `npm start`
 
-Then open http://localhost:8000/
+Then open http://localhost:8000/dist
 
 ## Todo
 

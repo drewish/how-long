@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en" ng-app="howLongApp">
+<head>
+  <meta charset="utf-8">
+  <title>How Long?</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700italic' rel='stylesheet' type='text/css'>
+</head>
+
+<body ng-app="sampleApp" ng-controller="SampleListCtrl">
+  <div class="container">
+    <div class="row">
+      <div class="control-container medium-6 push-6 columns">
+        <h1>How Long?</h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="graph-container medium-6 columns">
+
+        <div class="columns">
+          <section class="well empty-state">
+            <div class="meta-text text-center" ng-show="samples.length == 0">
+              Enter <em>two or more samples</em> to know how long a
+              task will take to complete.
+            </div>
+            <div class="meta-text text-center" ng-show="samples.length == 1">
+              Just <strong>one</strong> more sample needed.
+            </div>
+          </section>
+        </div>
+
+        <div class="graph">
+          <svg version="1.1" ng-attr-viewBox="0 0 {{chart.width}} {{chart.height}}"
+            ng-attr-width="{{chart.width}}" ng-attr-height="{{chart.height}}"
+            preserveAspectRatio="xMinYMin meet" >
+
+            <g ng-repeat="tick in ticks" class="tick">
+              <line ng-attr-x1="{{tick.x}}" ng-attr-y1="{{tick.y}}"
+                ng-attr-x2="{{chart.width}}" ng-attr-y2="{{tick.y}}" />
+              <text ng-attr-x="{{tick.x}}" ng-attr-y="{{tick.y - 4}}">
+                {{tick.label}}
+              </text>
+            </g>
+
+            <g ng-repeat="segment in segments" class="segment">
+              <polygon ng-attr-points="{{segment.points}}" />
+              <text ng-attr-x="{{segment.label.x - 4}}" ng-attr-y="{{segment.label.y - 4}}">
+                {{segment.label.text | rate}}
+              </text>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="control-container medium-6 columns">
+        <div class="row">
+          <div class="small-5 columns">
+            <label>Value</label>
+          </div>
+          <div class="small-5 small-offset-2 columns">
+            <label>Time</label>
+          </div>
+        </div>
+
+        <div class="row" ng-repeat="sample in samples">
+          <!-- <button ng-click="remove(sample)">Remove</button> -->
+          <div class="small-5 columns sample_value">
+            <h3 ng-bind="sample.value"></h3>
+          </div>
+          <div class="small-2 columns at"><label>at</label></div>
+          <div class="small-5 columns sample_time">
+            <h3 ng-bind="sample.time | date:'mediumTime'"></h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <form name="form" ng-submit="add()" ng-class="{'error' : newsample.$invalid}">
+            <div class="small-5 columns sample_value">
+              <input ng-model="newsample.value" type="number" min="1" name="value" size="60" required>
+            </div>
+            <div class="small-2 columns at"><label>at</label></div>
+            <div class="small-5 columns sample_time">
+              <input ng-model="newsample.time" type="time" name="time" size="60">
+            </div>
+            <div class="columns">
+              <button type="submit">+ Add Sample</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="row" ng-show="samples.length < 2">
+        </div>
+
+        <div class="row">
+          <div class="columns">
+            <label for="target">Final Count</label>
+            <input type="number" size="60" ng-model="target" name="target">
+          </div>
+          <div class="columns">
+            <h1 class="remaining" ng-bind="remaining"></h1>
+            <label for="estimated-time">Remaining</label>
+
+            <h3 ng-bind="rate | rate"></h1>
+            <label for="rate">Rate</label>
+
+            <h3 am-time-ago="estimate"></h1>
+            <h3 ng-bind="estimate | date:'short'"></h1>
+            <label for="estimated-time">Estimate</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="license-container">
+      <span>A thing made by</span>
+      <div class="who">
+        <a href="https://twitter.com/drewish">@Drewish</a><span class="amp">&amp;</span><a href="https://twitter.com/ZacHalbert">@ZacHalbert</a>
+      </div>
+      <a href="http://opensource.org/licenses/MIT" class="license">MIT License</a><a href="https://github.com/drewish/how-long/" class="repo">View on Github</a>
+    </div>
+  </footer>
+
+  <script src="js/all.min.js"></script>
+
+</body>
+</html>
